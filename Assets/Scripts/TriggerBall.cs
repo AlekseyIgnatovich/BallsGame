@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -28,10 +29,16 @@ public class TriggerBall : MonoBehaviour
             GetComponent<Ball>().StopMove();                            //иначе остановка
             return;
         }
+        List<Collider> toChek = new List<Collider>();
+        List<Collider> Destroy = new List<Collider>();
+        
+   }
 
-    //public class Explosion
+    private List<Collider> CheckForDestroy(Vector3 explosionPosition)
+    {
+        List<Collider> result = new List<Collider>();
         // Центр сферы — текущая позиция объекта
-        Vector3 explosionPosition = transform.position;
+        //Vector3 explosionPosition = transform.position;
         // Получаем массив объектов, находящихся в радиусе
         Collider[] colliders = Physics.OverlapSphere(explosionPosition, radius);
         // Обрабатываем найденные объекты
@@ -39,13 +46,13 @@ public class TriggerBall : MonoBehaviour
         {
             Ball myBall = GetComponent<Ball> ();
             Ball hitBall = hit.gameObject.GetComponent<Ball>();
-            Debug.Log("Обнаружен объект: " + hit.name);
-            // Пример: если объект имеет Rigidbody, добавляем импульс
+            //Debug.Log("Обнаружен объект: " + hit.name);
+            // если цвет объектов одинаковый, удаляются
             if ((hitBall != null) && (myBall.color == hitBall.color))
             {
-                Destroy(gameObject);
-                Destroy(hitBall.gameObject);
+                result.Add(hit);
             }
+            
         }
     }
 
